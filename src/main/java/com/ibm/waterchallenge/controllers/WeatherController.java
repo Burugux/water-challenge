@@ -27,7 +27,7 @@ public class WeatherController {
     String darkSkyKey;
 
     @GetMapping("/")
-    @ApiOperation(value = "get", notes = "Get weather conditions at all sites")
+    @ApiOperation(value = "List all weather conditions", notes = "Get weather conditions at all sites")
     public Summary getAllWeather(@RequestParam(required = false, defaultValue = "1") int offset,
                                  @RequestParam(required = false, defaultValue = "10") int limit) {
         RestTemplate restTemplate = new RestTemplate();
@@ -47,6 +47,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "List weather conditions", notes = "Get weather conditions at all sites")
     public SitesDetails getWeather(@PathVariable String id) {
         RestTemplate restTemplate = new RestTemplate();
         String url = String.format("https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/site/%s", id);
