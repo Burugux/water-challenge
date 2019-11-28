@@ -75,7 +75,7 @@ public class SensorController {
 
     @GetMapping("/{siteName}")
     @ApiOperation(value = "Get summary for a site", notes = "Get site summary by site name")
-    public ResponseEntity<HashMap<String, Object>> dailyCountyReadings(@RequestParam(required = false, defaultValue = "") String siteName) {
+    public ResponseEntity<HashMap<String, Object>> dailyCountyReadings(@RequestParam String siteName) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/sites/summary";
         Summary summary = restTemplate.getForObject(url, Summary.class);
