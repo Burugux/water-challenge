@@ -1,6 +1,8 @@
 package com.ibm.waterchallenge.controllers;
 
 import com.ibm.waterchallenge.models.DailySensorReadings;
+import com.ibm.waterchallenge.models.Sites;
+import com.ibm.waterchallenge.models.Summary;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -69,6 +71,27 @@ public class SensorController {
         resp.put("totalCount", count);
         resp.put("items", dailySensorReadings);
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @GetMapping("/{siteName}")
+    @ApiOperation(value = "Get summary for a site", notes = "Get site summary by site name")
+    public ResponseEntity<HashMap<String, Object>> dailyCountyReadings(@RequestParam(required = false, defaultValue = "") String siteName) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/sites/summary";
+        Summary summary = restTemplate.getForObject(url, Summary.class);
+
+        assert summary != null;
+
+        for (Sites s : summary.getData().getSites()) {
+            if (StringUtils.equalsIgnoreCase(s.getSite_name(), siteName)) {
+                HashMap<String, Object> resp = new HashMap<>();
+                resp.put("data", s);
+                return new ResponseEntity<>(resp, HttpStatus.OK);
+            }
+        }
+        HashMap<String, Object> resp = new HashMap<>();
+        resp.put("data", String.format("No site with name %s was found", siteName));
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 
     private static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
