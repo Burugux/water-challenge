@@ -75,7 +75,7 @@ public class SensorController {
 
     @GetMapping("/{siteName}")
     @ApiOperation(value = "Get summary for a site", notes = "Get site summary by site name")
-    public ResponseEntity<HashMap<String, Object>> dailyCountyReadings(@RequestParam String siteName) {
+    public ResponseEntity<HashMap<String, Object>> getSiteSummary(@RequestParam String siteName) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/sites/summary";
         Summary summary = restTemplate.getForObject(url, Summary.class);
@@ -91,6 +91,29 @@ public class SensorController {
         }
         HashMap<String, Object> resp = new HashMap<>();
         resp.put("data", String.format("No site with name %s was found", siteName));
+        return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+    }
+
+
+    @GetMapping("/{coordinates}")
+    @ApiOperation(value = "Get summary for coordinates", notes = "Get site summary by site coordinates")
+    public ResponseEntity<HashMap<String, Object>> getSiteSummaryCoordinates(@RequestParam String latitude,
+                                                                             @RequestParam String longitude) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/sites/summary";
+        Summary summary = restTemplate.getForObject(url, Summary.class);
+
+        assert summary != null;
+
+        for (Sites s : summary.getData().getSites()) {
+            if (StringUtils.equalsIgnoreCase(s.getSite_lat(), latitude) && StringUtils.equalsIgnoreCase(s.getSite_lon(), longitude)) {
+                HashMap<String, Object> resp = new HashMap<>();
+                resp.put("data", s);
+                return new ResponseEntity<>(resp, HttpStatus.OK);
+            }
+        }
+        HashMap<String, Object> resp = new HashMap<>();
+        resp.put("data", String.format("No site with latitude %s and longitude %s was found", latitude, longitude));
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 
