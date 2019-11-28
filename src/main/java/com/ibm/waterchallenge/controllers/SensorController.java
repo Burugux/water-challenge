@@ -47,7 +47,7 @@ public class SensorController {
 
         dailySensorReadings.setData(dataList);
         HashMap<String, Object> resp = new HashMap<>();
-        resp.put("data", dailySensorReadings);
+        resp.put("items", dailySensorReadings);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 

@@ -47,7 +47,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "List weather conditions", notes = "Get weather conditions at all sites")
+    @ApiOperation(value = "List site weather conditions", notes = "Get weather conditions at a site")
     public SitesDetails getWeather(@PathVariable String id) {
         RestTemplate restTemplate = new RestTemplate();
         String url = String.format("https://waterpoint-engine-challenge-dev.mybluemix.net/sensors/site/%s", id);
