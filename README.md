@@ -39,7 +39,7 @@ mvn spring-boot:run -Dspring.profiles.active=dev
  ## Running the JAR
  * JARs and other compiled assets can be found in the resources folder
  ```console
- java -jar target/monitor-0.0.1-SNAPSHOT.jar
+ java -jar target/water-challenge-0.0.1-SNAPSHOT.jar
  ```
 
 ## Accessing the swagger UI locally
